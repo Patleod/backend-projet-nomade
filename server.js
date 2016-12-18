@@ -24,6 +24,7 @@ app.all('/*', function (req, res, next) {
 });
 
 app.use('/users', user);
+
 app.use('/events', event);
 
 app.get('/', function (req, res) {
