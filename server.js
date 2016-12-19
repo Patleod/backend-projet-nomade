@@ -3,10 +3,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
+var cors = require('cors');
 var jwt = require('express-jwt');
-
+var secretB64 = new Buffer('wNAKaffYXaKJ6bGY_R6tmhKZY8bgxHv3HcXyv62ng3GB3fMs9954cQBTshZFCmaG', "base64");
 var jwtCheck = jwt({
-  secret: 'wNAKaffYXaKJ6bGY_R6tmhKZY8bgxHv3HcXyv62ng3GB3fMs9954cQBTshZFCmaG',
+  secret: secretB64,
   audience: 'Y76wLooWM3ZCxO8aMUSooQdwpsYUoc4s'
 });
 var user = require('./user/userRoutes');
@@ -21,18 +22,18 @@ mongoose.connect('mongodb://ng2sam:ng2sam@ds135798.mlab.com:35798/migrant-app', 
   }
 });
 
-
-app.all('/*', function (req, res, next) {
+app.use(cors());
+/*app.all('/*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
- res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+ res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
   next();
-});
+});*/
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use('/users', user);
 
-app.use('/events', event);
+app.use('/events', jwtCheck, event);
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -41,4 +42,5 @@ app.get('/', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
+
 
