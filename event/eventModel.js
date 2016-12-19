@@ -7,11 +7,8 @@ var eventSchema = new Schema({
 	'description' : String,
 	'date' : Date,
 	'eventType' : Number,
-	'organisateur' : {
-	 	type: Schema.Types.ObjectId,
-	 	ref: 'User'
-	},
-	'participants' : [{ type : Schema.Types.ObjectId, ref: 'User' }],
+	'organisateur' : { type: String, ref: 'user' },
+	'participants' : [{ type: String, ref: 'user' }],
 });
 
 module.exports = mongoose.model('event', eventSchema);
