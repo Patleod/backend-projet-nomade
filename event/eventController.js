@@ -50,7 +50,17 @@ module.exports = {
     create: function (req, res) {
 
         console.log("body",req.body.organisatorId);
-        userModel.findOne({_id: req.body.organisatorId.toString()}, function (err, user) {
+        t = req.body.organisatorId.split("|"); 
+        console.log(t);
+
+        if (t[0] == "auth0"){
+            var rqt = {_id: t[1]}
+        }else if(t[0]==="google-oauth2"){
+            var rqt = {client_id: t[1]}
+        }
+        console.log("token",t);
+        
+        userModel.findOne(rqt, function (err, user) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting user.',
@@ -117,7 +127,7 @@ module.exports = {
      * eventController.update()
      */
     update: function (req, res) {
-        var id = req.params.id;
+        var id = req.params._id;
         eventModel.findOne({_id: id}, function (err, event) {
             if (err) {
                 return res.status(500).json({
