@@ -127,7 +127,8 @@ module.exports = {
      * eventController.update()
      */
     update: function (req, res) {
-        var id = req.params._id;
+        var id = req.body._id;
+        console.log("id",id);
         eventModel.findOne({_id: id}, function (err, event) {
             if (err) {
                 return res.status(500).json({
