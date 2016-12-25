@@ -12,7 +12,7 @@ var jwtCheck = jwt({
 });
 var user = require('./user/userRoutes');
 var event = require('./event/eventRoutes');
-
+var port = process.env.PORT || 5000;
 // MongoDB configuration
 mongoose.connect('mongodb://ng2sam:ng2sam@ds135798.mlab.com:35798/migrant-app', function(err, res) {
   if(err) {
@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 });
 
 app.listen(5000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Example app listening on port 5000!');
 });
 
 
