@@ -56,7 +56,7 @@ module.exports = {
 			schedule : req.body.schedule,
 			description : req.body.description,
 			website : req.body.website,
-			validate : req.body.validate,
+			valid : req.body.valid,
 			members : req.body.members,
 			manager : req.body.manager,
 			followers : req.body.followers
@@ -98,7 +98,7 @@ module.exports = {
 			association.schedule = req.body.schedule ? req.body.schedule : association.schedule;
 			association.description = req.body.description ? req.body.description : association.description;
 			association.website = req.body.website ? req.body.website : association.website;
-			association.validate = req.body.validate ? req.body.validate : association.validate;
+			association.valid = req.body.valid ? req.body.valid : association.valid;
 			association.members = req.body.members ? req.body.members : association.members;
 			association.manager = req.body.manager ? req.body.manager : association.manager;
 			association.followers = req.body.followers ? req.body.followers : association.followers;

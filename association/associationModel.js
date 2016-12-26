@@ -10,7 +10,7 @@ var associationSchema = new Schema({
 	'schedule' : String,
 	'description' : String,
 	'website' : String,
-	'validate' : Boolean,
+	'valid' : Boolean,
 	'members' : [{
 	 	type: String,
 	 	ref: 'user'
