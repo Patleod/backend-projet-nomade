@@ -101,25 +101,7 @@ module.exports = {
                 });
             //return res.status(201).json(event);
         });
-          /*  var event = new eventModel({
-                name : req.body.name,
-                description : req.body.description,
-                date : req.body.date,
-                eventType : 1,
-                organisateur : mongoose.Types.ObjectId(req.body.organisatorId),
-                participants : [mongoose.Types.ObjectId(req.body.organisatorId)]
-            });
-            console.log(event);
-        event.save( (err, event) => {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating event',
-                    error: err
-                });
-            }
-            return res.status(201).json(event);
-      
-        });*/
+         
 
     },
 
@@ -128,7 +110,6 @@ module.exports = {
      */
     update: function (req, res) {
         var id = req.body._id;
-        console.log("id",id);
         eventModel.findOne({_id: id}, function (err, event) {
             if (err) {
                 return res.status(500).json({

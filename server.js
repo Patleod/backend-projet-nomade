@@ -12,7 +12,7 @@ var jwtCheck = jwt({
 });
 var user = require('./user/userRoutes');
 var event = require('./event/eventRoutes');
-
+var association = require('./association/associationRoutes');
 // MongoDB configuration
 mongoose.connect('mongodb://ng2sam:ng2sam@ds135798.mlab.com:35798/migrant-app', function(err, res) {
   if(err) {
@@ -31,9 +31,10 @@ app.use(cors());
 });*/
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
-app.use('/users', user);
 
+app.use('/users', user);
 app.use('/events', jwtCheck, event);
+app.use('/associations', association);
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
