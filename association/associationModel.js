@@ -22,7 +22,11 @@ var associationSchema = new Schema({
 	'followers' : [{
 	 	type: String,
 	 	ref: 'user'
-	}]
+	}],
+	'pays': String,
+	'langue': String,
+	'mineur': Boolean,
+	'nonAccompagne': Boolean,
 });
 
 module.exports = mongoose.model('association', associationSchema);

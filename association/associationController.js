@@ -59,9 +59,13 @@ module.exports = {
 			valid : req.body.valid,
 			members : req.body.members,
 			manager : req.body.manager,
-			followers : req.body.followers
+			followers : req.body.followers,
+            mineur : req.body.mineur,
+            nonAccompagne : req.body.nonAccompagne,
+            pays : req.body.pays,
+            langue : req.body.langue,
         });
-
+        console.log(association);
         association.save(function (err, association) {
             if (err) {
                 return res.status(500).json({
@@ -102,7 +106,11 @@ module.exports = {
 			association.members = req.body.members ? req.body.members : association.members;
 			association.manager = req.body.manager ? req.body.manager : association.manager;
 			association.followers = req.body.followers ? req.body.followers : association.followers;
-			
+            association.mineur = req.body.mineur ? req.body.mineur : association.mineur;
+            association.nonAccompagne = req.body.nonAccompagne ? req.body.nonAccompagne : association.nonAccompagne;
+            association.pays = req.body.pays ? req.body.pays : association.pays;
+            association.langue = req.body.langue ? req.body.langue : association.langue;
+
             association.save(function (err, association) {
                 if (err) {
                     return res.status(500).json({
