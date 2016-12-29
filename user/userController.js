@@ -168,6 +168,7 @@ module.exports = {
 
             user.connection = req.body.connection ? req.body.connection : user.connection;
             user.email = req.body.email ? req.body.email : user.email;
+            user.name = req.body.name ? req.body.name : user.name;
             user.password = req.body.password ? req.body.password : user.password;
             user.role = req.body.role ? req.body.role : user.role;
             user.mineur = req.body.mineur ? req.body.mineur : user.mineur;
