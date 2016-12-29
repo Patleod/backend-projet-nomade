@@ -49,7 +49,7 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
         userModel.findOne({
-            _id: id
+            $or:[ {'_id':id},{'client_id':"google-oauth2|"+id}]
         }, function (err, user) {
             if (err) {
                 return res.status(500).json({
