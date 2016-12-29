@@ -21,25 +21,25 @@ module.exports = {
             var i = 0;
             var usrs = [];
             users.forEach(function (element) {
-            var user = new userModel({
-                connection: element.connection,
-                email: element.email,
-                name: element.name ? element.name : element.email,
-                img: element.picture?element.picture:null,
-                role: element.role?element.role:[],
-                mineur: element.mineur?element.mineur:null,
-                nonAccompagne: element.nonAccompagne?element.nonAccompagne:null,
-                pays: element.pays? element.pays:null,
-                langue: element.langue?element.langue:(element.locale?element.locale:null),
-            });           
+                var user = new userModel({
+                    connection: element.connection,
+                    email: element.email,
+                    name: element.name ? element.name : element.email,
+                    picture: element.picture ? element.picture : null,
+                    role: element.role ? element.role : [],
+                    mineur: element.mineur ? element.mineur : null,
+                    nonAccompagne: element.nonAccompagne ? element.nonAccompagne : null,
+                    pays: element.pays ? element.pays : null,
+                    locale: element.locale ? element.locale : (element.locale ? element.locale : null),
+                });
                 usrs.push(user);
                 //console.log( element.family_name?element.family_name:null);
                 i++;
                 if (i === users.length) {
-                     return res.json(usrs);
+                    return res.json(usrs);
                 }
             }, this);
-           
+
         });
     },
 
@@ -49,20 +49,53 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
         userModel.findOne({
-            $or:[ {'_id':id},{'client_id':"google-oauth2|"+id}]
+            _id: id
         }, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user.',
-                    error: err
+            if (err || !user) {
+                userModel.findOne({
+                    'user_id': "google-oauth2|" + id
+                }, function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when getting user.',
+                            error: err
+                        });
+                    }
+
+                    if (!user) {
+                        return res.status(404).json({
+                            message: 'No such user'
+                        });
+                    }
+                    console.log(user);
+                let us = new userModel({
+                    connection: user.connection,
+                    email: user.email,
+                    name: user.name ? user.name : user.email,
+                    picture: user.picture ? user.picture : null,
+                    role: user.role ? user.role : [],
+                    mineur: user.mineur ? user.mineur : null,
+                    nonAccompagne: user.nonAccompagne ? user.nonAccompagne : null,
+                    pays: user.pays ? user.pays : null,
+                    locale: user.locale ? user.locale :  null,
                 });
-            }
-            if (!user) {
-                return res.status(404).json({
-                    message: 'No such user'
+                    return res.json(us);
                 });
+
+            } else {
+               let us = new userModel({
+                    connection: user.connection,
+                    email: user.email,
+                    name: user.name ? user.name : user.email,
+                    picture: user.picture ? user.picture : null,
+                    role: user.role ? user.role : [],
+                    mineur: user.mineur ? user.mineur : null,
+                    nonAccompagne: user.nonAccompagne ? user.nonAccompagne : null,
+                    pays: user.pays ? user.pays : null,
+                    locale: user.locale ? user.locale :  null,
+                });
+                    return res.json(us);
             }
-            return res.json(user);
         });
     },
     showByEmal: function (req, res) {
@@ -93,13 +126,13 @@ module.exports = {
             connection: req.body.connection,
             email: req.body.email,
             name: req.body.name,
-            img: req.body.picture,
+            picture: req.body.picture,
             password: req.body.password,
             role: req.body.role,
             mineur: req.body.mineur,
             nonAccompagne: req.body.nonAccompagne,
             pays: req.body.pays,
-            langue: req.body.langue,
+            locale: req.body.locale,
         });
 
         user.save(function (err, user) {
@@ -140,7 +173,7 @@ module.exports = {
             user.mineur = req.body.mineur ? req.body.mineur : user.mineur;
             user.nonAccompagne = req.body.nonAccompagne ? req.body.nonAccompagne : user.nonAccompagne;
             user.pays = req.body.pays ? req.body.pays : user.pays;
-            user.langue = req.body.langue ? req.body.langue : user.langue;
+            user.locale = req.body.locale ? req.body.locale : user.locale;
 
 
             user.save(function (err, user) {

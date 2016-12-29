@@ -6,11 +6,11 @@ var userSchema = new Schema({
 	'connection' : String,
 	'email' : String,
 	'name': String,
-	'img': String,
+	'picture': String,
 	'password' : String,
 	'role' : Array,
 	'pays': String,
-	'langue': String,
+	'locale': String,
 	'mineur': Boolean,
 	'nonAccompagne': Boolean
 });
