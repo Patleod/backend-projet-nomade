@@ -68,6 +68,21 @@ module.exports = {
                         });
                     }
                     console.log(user);
+                    let us = new userModel({
+                        connection: user.connection,
+                        email: user.email,
+                        name: user.name ? user.name : user.email,
+                        picture: user.picture ? user.picture : null,
+                        role: user.role ? user.role : [],
+                        mineur: user.mineur ? user.mineur : null,
+                        nonAccompagne: user.nonAccompagne ? user.nonAccompagne : null,
+                        pays: user.pays ? user.pays : null,
+                        locale: user.locale ? user.locale : null,
+                    });
+                    return res.json(us);
+                });
+
+            } else {
                 let us = new userModel({
                     connection: user.connection,
                     email: user.email,
@@ -77,24 +92,9 @@ module.exports = {
                     mineur: user.mineur ? user.mineur : null,
                     nonAccompagne: user.nonAccompagne ? user.nonAccompagne : null,
                     pays: user.pays ? user.pays : null,
-                    locale: user.locale ? user.locale :  null,
+                    locale: user.locale ? user.locale : null,
                 });
-                    return res.json(us);
-                });
-
-            } else {
-               let us = new userModel({
-                    connection: user.connection,
-                    email: user.email,
-                    name: user.name ? user.name : user.email,
-                    picture: user.picture ? user.picture : null,
-                    role: user.role ? user.role : [],
-                    mineur: user.mineur ? user.mineur : null,
-                    nonAccompagne: user.nonAccompagne ? user.nonAccompagne : null,
-                    pays: user.pays ? user.pays : null,
-                    locale: user.locale ? user.locale :  null,
-                });
-                    return res.json(us);
+                return res.json(us);
             }
         });
     },
@@ -154,7 +154,69 @@ module.exports = {
         userModel.findOne({
             _id: id
         }, function (err, user) {
-            if (err) {
+        if(err){
+            userModel.findOne({
+                'user_id': "google-oauth2|" + id
+            }, function (err, user) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting user.',
+                        error: err
+                    });
+                }
+
+                if (!user) {
+                    return res.status(404).json({
+                        message: 'No such user'
+                    });
+                }
+
+                user.connection = req.body.connection ? req.body.connection : user.connection;
+                user.email = req.body.email ? req.body.email : user.email;
+                user.name = req.body.name ? req.body.name : user.name;
+                user.password = req.body.password ? req.body.password : user.password;
+                user.role = req.body.role ? req.body.role : user.role;
+                user.mineur = req.body.mineur ? req.body.mineur : user.mineur;
+                user.nonAccompagne = req.body.nonAccompagne ? req.body.nonAccompagne : user.nonAccompagne;
+                user.pays = req.body.pays ? req.body.pays : user.pays;
+                user.locale = req.body.locale ? req.body.locale : user.locale;
+
+
+                user.save(function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when updating user.',
+                            error: err
+                        });
+                    }
+
+                    return res.json(user);
+                });
+            });
+        } else {
+                user.connection = req.body.connection ? req.body.connection : user.connection;
+                user.email = req.body.email ? req.body.email : user.email;
+                user.name = req.body.name ? req.body.name : user.name;
+                user.password = req.body.password ? req.body.password : user.password;
+                user.role = req.body.role ? req.body.role : user.role;
+                user.mineur = req.body.mineur ? req.body.mineur : user.mineur;
+                user.nonAccompagne = req.body.nonAccompagne ? req.body.nonAccompagne : user.nonAccompagne;
+                user.pays = req.body.pays ? req.body.pays : user.pays;
+                user.locale = req.body.locale ? req.body.locale : user.locale;
+
+
+                user.save(function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when updating user.',
+                            error: err
+                        });
+                    }
+
+                    return res.json(user);
+                });
+        }
+            /*if (err) {
                 return res.status(500).json({
                     message: 'Error when getting user',
                     error: err
@@ -164,29 +226,8 @@ module.exports = {
                 return res.status(404).json({
                     message: 'No such user'
                 });
-            }
+            }*/
 
-            user.connection = req.body.connection ? req.body.connection : user.connection;
-            user.email = req.body.email ? req.body.email : user.email;
-            user.name = req.body.name ? req.body.name : user.name;
-            user.password = req.body.password ? req.body.password : user.password;
-            user.role = req.body.role ? req.body.role : user.role;
-            user.mineur = req.body.mineur ? req.body.mineur : user.mineur;
-            user.nonAccompagne = req.body.nonAccompagne ? req.body.nonAccompagne : user.nonAccompagne;
-            user.pays = req.body.pays ? req.body.pays : user.pays;
-            user.locale = req.body.locale ? req.body.locale : user.locale;
-
-
-            user.save(function (err, user) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating user.',
-                        error: err
-                    });
-                }
-
-                return res.json(user);
-            });
         });
     },
 
